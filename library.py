@@ -1,7 +1,5 @@
 import tkinter as tk
 from tkinter import Tk, ttk, E, W, N, S, END
-
-from colorama import colorama_text
 import PasswordGenerator as pg
 
 window_main_menu = Tk()
