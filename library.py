@@ -1,4 +1,4 @@
-from tkinter import Tk, ttk, E, W, N, S, END, messagebox, PhotoImage, Text
+from tkinter import Tk, ttk, E, W, N, END, messagebox, PhotoImage, Text
 import PasswordGenerator as pg
 
 class Member:
@@ -137,18 +137,20 @@ def main_menu(other_window):
     window_main_menu = Tk()
     window_main_menu.title('Library')
     window_main_menu.config(background='#88AB75')
+    window_main_menu.bind('<Escape>', lambda *args: window_main_menu.destroy())
 
     lbl_menu_title = ttk.Label(
         master=window_main_menu,
-        text='*********** Main Menu ***********',
+        text='******* Main Menu *******',
         font=('Times new roman', 18),
-        background='#342E37',
-        foreground='white',
+        background='#88AB75',
+        foreground='black',
     )
 
     # Three buttons are created here
     style = ttk.Style()
     style.theme_use('alt')
+    style.configure('TButton', font=('Helvetica', 12))
     style.configure('TButton', background = '#342E37', foreground = 'white', width = 20, borderwidth=1, focusthickness=3, focuscolor='none')
     style.map('TButton', background=[('active','red')]) 
 
@@ -184,18 +186,17 @@ def main_menu(other_window):
         column=0,
         pady=(5,),
         padx=3,
-        sticky=(W,N,S)
     )
     btn_admin.grid(
-        row=3,
-        column=0,
-        padx=3,
-        sticky=(W,N,S)
-    )
-    lbl_book_img.grid(
         row=1,
         column=1,
-        rowspan=3
+        padx=3,
+    )
+    lbl_book_img.grid(
+        row=2,
+        column=0,
+        columnspan=2,
+        rowspan=3,
     )
 
     window_main_menu.mainloop()
@@ -208,10 +209,10 @@ def internal_user_menu(user_info, other_window):
 
     lbl_internal_title = ttk.Label(
         master=window_internal_user_menu,
-        text='************ Internal Menu ************',
+        text='*************** Internal Menu ***************',
         font=('Times new roman', 18),
-        background='#342E37',
-        foreground='white',
+        background='#88AB75',
+        foreground='black',
     )
     lbl_user_info = ttk.Label(
         master=window_internal_user_menu,
@@ -237,7 +238,7 @@ def internal_user_menu(user_info, other_window):
     txt_list_of_books = Text(
         master=window_internal_user_menu,
         height=5,
-        width=17,
+        width=18,
         font=('Arial', 12),
     )
     txt_list_of_books.insert(1.0, books_str)
@@ -253,7 +254,7 @@ def internal_user_menu(user_info, other_window):
     txt_user_books = Text(
         master=window_internal_user_menu,
         height=5,
-        width=17,
+        width=18,
         font=('Arial', 12),
     )
     txt_user_books.insert(1.0, user_books)
@@ -261,6 +262,8 @@ def internal_user_menu(user_info, other_window):
 
     ent_book = ttk.Entry(
         master=window_internal_user_menu,
+        justify='center',
+        font=('Arial', 14),
     )
 
     def borrowing_book():
@@ -303,7 +306,8 @@ def internal_user_menu(user_info, other_window):
     style = ttk.Style()
     style.theme_use('alt')
     style.configure('TButton', background = '#342E37', foreground = 'white', width = 20, borderwidth=1, focusthickness=3, focuscolor='none')
-    style.map('TButton', background=[('active','red')]) 
+    style.configure('TButton', font=('Helvetica', 12))
+    style.map('TButton', background=[('active','red')],) 
 
     btn_borrow = ttk.Button(
         master=window_internal_user_menu,
@@ -375,6 +379,7 @@ def internal_user_menu(user_info, other_window):
     lbl_user_info.grid(
         row=1,
         column=1,
+        pady=2,
     )
     lbl_sharp_books.grid(
         row=2,
@@ -448,16 +453,17 @@ def login(other_window):
 
     lbl_login_title = ttk.Label(
         master=window_login,
-        text='****** Login ******',
+        text='******* Login *******',
         font=('Times new roman', 18),
-        background='#342E37',
-        foreground='white',
+        background='#88AB75',
+        foreground='black',
 
     )
     lbl_username = ttk.Label(
         master=window_login,
         text='Username',
         background='#88AB75',
+        font=('Arial', 12),
     )
     ent_username = ttk.Entry(
         master=window_login,
@@ -466,6 +472,7 @@ def login(other_window):
         master=window_login,
         text='Password',
         background='#88AB75',
+        font=('Arial', 12),
     )
     ent_password = ttk.Entry(
         master=window_login,
@@ -500,6 +507,7 @@ def login(other_window):
 
     style = ttk.Style()
     style.theme_use('alt')
+    style.configure('TButton', font=('Helvetica', 12))
     style.configure('TButton', background = '#342E37', foreground = 'white', width = 20, borderwidth=1, focusthickness=3, focuscolor='none')
     style.map('TButton', background=[('active','red')]) 
 
@@ -574,13 +582,14 @@ def signup(other_window):
         master=window_signup,
         text='************** Signup **************',
         font=('Times new roman', 18),
-        background='#342E37',
-        foreground='white',
+        background='#88AB75',
+        foreground='black',
     )
     lbl_username = ttk.Label(
         master=window_signup,
         text='Username',
         background='#88AB75',
+        font=('Arial', 12),
     )
     ent_username = ttk.Entry(
         master=window_signup,
@@ -589,6 +598,7 @@ def signup(other_window):
         master=window_signup,
         text='Password',
         background='#88AB75',
+        font=('Arial', 12),
     )
     ent_password = ttk.Entry(
         master=window_signup,
@@ -600,7 +610,7 @@ def signup(other_window):
     btn_suggest_password = ttk.Button(
         master=window_signup,
         text='Suggest Password',
-        width=25,
+        width=19,
         command=suggest_password,
     )
     def save_new_user(*args):
@@ -631,6 +641,7 @@ def signup(other_window):
 
     style = ttk.Style()
     style.theme_use('alt')
+    style.configure('TButton', font=('Helvetica', 12))
     style.configure('TButton', background = '#342E37', foreground = 'white', width = 20, borderwidth=1, focusthickness=3, focuscolor='none')
     style.map('TButton', background=[('active','red')]) 
 
@@ -651,14 +662,13 @@ def signup(other_window):
     window_signup.bind('<Escape>', lambda *args: user_menu(window_signup))
 
 
-    """Display all here"""
+    # Display all here
     lbl_signup_title.grid(
         row=0,
         column=0,
-        columnspan=4,
+        columnspan=5,
         pady=10,
         padx=3,
-        sticky=(W,)
     )
     lbl_username.grid(
         row=1,
@@ -685,6 +695,7 @@ def signup(other_window):
     btn_suggest_password.grid(
         row=2,
         column=2,
+        columnspan=2,
         padx=4,
     )
     btn_submit.grid(
@@ -692,7 +703,7 @@ def signup(other_window):
         column=0,
         columnspan=2,
         padx=3,
-        sticky=(W,E)
+        sticky=(W,E),
     )
     btn_back.grid(
         row=4,
@@ -717,13 +728,14 @@ def deleting_account(other_window):
         master=window_del_account,
         text='******* Delete account *******',
         font=('Times new roman', 18),
-        background='#342E37',
-        foreground='white',
+        background='#88AB75',
+        foreground='black',
     )
     lbl_username = ttk.Label(
         master=window_del_account,
         text='Username',
         background='#88AB75',
+        font=('Arial', 12),
     )
     ent_username = ttk.Entry(
         master=window_del_account,
@@ -732,6 +744,7 @@ def deleting_account(other_window):
         master=window_del_account,
         text='Password',
         background='#88AB75',
+        font=('Arial', 12),
     )
     ent_password = ttk.Entry(
         master=window_del_account,
@@ -741,6 +754,7 @@ def deleting_account(other_window):
 
     style = ttk.Style()
     style.theme_use('alt')
+    style.configure('TButton', font=('Helvetica', 12))
     style.configure('TButton', background = '#342E37', foreground = 'white', width = 20, borderwidth=1, focusthickness=3, focuscolor='none')
     style.map('TButton', background=[('active','red')]) 
 
@@ -824,7 +838,8 @@ def deleting_account(other_window):
         row=3,
         column=0,
         columnspan=2,
-        sticky=(W,E)
+        sticky=(W,E),
+        padx=3,
     )
     btn_back.grid(
         row=4,
@@ -840,14 +855,15 @@ def admin_menu(other_window):
 
     lbl_admin_menu_title = ttk.Label(
         master=window_admin_menu,
-        text='***** Admin Menu *****',
+        text='******* Admin Menu *******',
         font=('Times new roman', 18),
-        background='#342E37',
-        foreground='white',
+        background='#88AB75',
+        foreground='black',
     )
 
     style = ttk.Style()
     style.theme_use('alt')
+    style.configure('TButton', font=('Helvetica', 12))
     style.configure('TButton', background = '#342E37', foreground = 'white', width = 20, borderwidth=1, focusthickness=3, focuscolor='none')
     style.map('TButton', background=[('active','red')]) 
 
@@ -864,14 +880,15 @@ def admin_menu(other_window):
                 messagebox.showwarning('books file', e)
 
             except AssertionError:
-                messagebox.showwarning('book not found', f'{book_name} already exist!')
+                messagebox.showwarning('book exists', f'{book_name} already exist!')
 
             else:
                 books_str = Book.list_of_books()
                 books_str = 'List of books:\n'+books_str
-                lbl_list_of_books['text'] = books_str
-                lbl_list_of_books.grid(
-                    row=6,
+                txt_list_of_books.delete(1.0, END)
+                txt_list_of_books.insert(1.0, books_str)
+                txt_list_of_books.grid(
+                    row=2,
                     column=0,
                     pady=5,
                     padx=5,
@@ -881,7 +898,7 @@ def admin_menu(other_window):
     btn_add_book = ttk.Button(
         master= window_admin_menu,
         text= 'Add Book',
-        width=16,
+        width=15,
         command=adding_book
     )
     window_admin_menu.bind('<Return>', adding_book)
@@ -905,9 +922,10 @@ def admin_menu(other_window):
             else:
                 books_str = Book.list_of_books()
                 books_str = 'List of books:\n'+books_str
-                lbl_list_of_books['text'] = books_str
-                lbl_list_of_books.grid(
-                    row=6,
+                txt_list_of_books.delete(1.0, END)
+                txt_list_of_books.insert(1.0, books_str)
+                txt_list_of_books.grid(
+                    row=2,
                     column=0,
                     pady=5,
                     padx=5,
@@ -917,15 +935,17 @@ def admin_menu(other_window):
     btn_remove_book = ttk.Button(
         master= window_admin_menu,
         text= 'Remove Book',
-        width=16,
+        width=15,
         command=removing_book,
     )
     ent_book = ttk.Entry(
         master=window_admin_menu,
+        justify='center',
+        font=('Arial', 14),
     )
     btn_back = ttk.Button(
         master= window_admin_menu,
-        width=16,
+        width=15,
         text= "Back",
         command=lambda: main_menu(window_admin_menu)
     )
@@ -934,21 +954,23 @@ def admin_menu(other_window):
     try:
         books_str = Book.list_of_books()
         books_str = 'List of books:\n'+books_str
-        lbl_list_of_books = ttk.Label(
+        txt_list_of_books = Text(
             master=window_admin_menu,
-            text=books_str,
+            height=10,
+            width=18,
             font=('Arial', 12),
-            background='#88AB75',
         )
+        txt_list_of_books.insert(1.0, books_str)
     except FileNotFoundError as e:
-        lbl_list_of_books = ttk.Label(
+        txt_list_of_books = Text(
             master=window_admin_menu,
-            text=e,
+            height=10,
+            width=18,
             font=('Arial', 12),
-            background='#88AB75',
         )
+        txt_list_of_books.insert(1.0, e)
 
-    """Display all here"""
+    # Display all here
 
     lbl_admin_menu_title.grid(
         row=0,
@@ -959,27 +981,28 @@ def admin_menu(other_window):
         sticky=(W,),
     )
     ent_book.grid(
-        row=3,
+        row=1,
         column=0,
         columnspan=2,
         sticky=(E,W),
         padx=3,
     )
     btn_add_book.grid(
-        row=4,
-        column=0,
+        row=2,
+        column=1,
         sticky=(W,),
         padx=3,
         pady=5,
     )
     btn_remove_book.grid(
-        row=4,
+        row=3,
         column=1,
         pady=(5,),
         sticky=(E,),
     )
-    lbl_list_of_books.grid(
-        row=6,
+    txt_list_of_books.grid(
+        row=2,
+        rowspan=7,
         column=0,
         pady=5,
         padx=5,
@@ -987,8 +1010,8 @@ def admin_menu(other_window):
     )
     
     btn_back.grid(
-        row=5,
-        column=0,
+        row=4,
+        column=1,
         columnspan=2,
         pady=(7,),
         padx=3,
@@ -1010,12 +1033,13 @@ def user_menu(other_window):
         master=window_user_menu,
         text='******** User Menu ********',
         font=('Times new roman', 18),
-        background='#342E37',
-        foreground='white',
+        background='#88AB75',
+        foreground='black',
     )
 
     style = ttk.Style()
     style.theme_use('alt')
+    style.configure('TButton', font=('Helvetica', 12))
     style.configure('TButton', background = '#342E37', foreground = 'white', width = 20, borderwidth=1, focusthickness=3, focuscolor='none')
     style.map('TButton', background=[('active','red')]) 
 
@@ -1051,6 +1075,7 @@ def user_menu(other_window):
     lbl_user_menu_title.grid(
         row=0,
         column=0,
+        columnspan=3,
         pady=(10,),
         padx=3,
     )
@@ -1062,21 +1087,21 @@ def user_menu(other_window):
         sticky=(W,)
     )
     btn_login.grid(
-        row=2,
-        column=0,
+        row=1,
+        column=1,
         padx=3,
         sticky=(W,)
     )
     btn_delete_account.grid(
-        row=3,
+        row=2,
         column=0,
         pady=(7,),
         padx=3,
         sticky=(W,)
     )
     btn_back.grid(
-        row=4,
-        column=0,
+        row=2,
+        column=1,
         padx=3,
         sticky=(W,)
     )
