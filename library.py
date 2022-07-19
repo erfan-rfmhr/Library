@@ -1,26 +1,31 @@
 from tkinter import Tk, ttk, E, W, N, END, messagebox, PhotoImage, Text
 import PasswordGenerator as pg
+from os import system, chdir
+
+# ! do not delete the next line
+counter = 1
 
 class Member:
-    def __init__(self, username='', password=''):
+    def __init__(self, username='', password='', email=''):
         self.username = username
         self.password = password
+        self.email = email
 
     def signup(self):
         with open('users.txt', 'r') as reader:
             users_list = reader.readlines()
             for user in users_list:
-                assert self.username not in user, 'Username has already taken!'
+                assert self.username not in user, 'Username has been already taken!'
             
-        with open("users.txt", 'a') as f:
-            f.write(f"{self.username} {self.password}\n")
+        with open("users.txt", 'a') as writer:
+            writer.write(f"{self.username} {self.password} {self.email}\n")
 
     def login(self):
         logged_in = False
-        with open("users.txt", 'r') as f:
+        with open("users.txt", 'r') as reader:
             while True:
-                u = f.readline()
-                if (self.username +' '+ self.password) in u:
+                u = reader.readline()
+                if (self.username in u) and (self.password in u):
                     logged_in = True
                     break
                 elif u == '':
@@ -52,7 +57,6 @@ class Member:
                                 index = books_list.index(book_name)
                                 books_list[index] = '#'+book_name
                                 writer.write('\n'.join(books_list))
-                                
                             break
                         break
 
@@ -173,7 +177,7 @@ def main_menu(other_window):
         image=book_img,
     )
 
-    """Display all in window_main_menu"""
+    # Display all in window_main_menu
 
     lbl_menu_title.grid(
         row=0,
@@ -467,6 +471,7 @@ def login(other_window):
     )
     ent_username = ttk.Entry(
         master=window_login,
+        font=('Arial', 12),
     )
     lbl_password = ttk.Label(
         master=window_login,
@@ -476,8 +481,10 @@ def login(other_window):
     )
     ent_password = ttk.Entry(
         master=window_login,
+        font=('Arial', 12),
         show='*',
     )
+
 
     def login_button(*args):
         username = ent_username.get()
@@ -509,7 +516,25 @@ def login(other_window):
     style.theme_use('alt')
     style.configure('TButton', font=('Helvetica', 12))
     style.configure('TButton', background = '#342E37', foreground = 'white', width = 20, borderwidth=1, focusthickness=3, focuscolor='none')
-    style.map('TButton', background=[('active','red')]) 
+    style.map('TButton', background=[('active','red')])
+
+    # ? a better solution ?
+    def show_pass():
+        global counter
+        if counter&1 == 1:
+            ent_password.config(show='')
+            counter += 1
+        else:
+            ent_password.config(show='*')
+            counter += 1
+
+    btn_reveal_password = ttk.Checkbutton(
+        master=window_login,
+        text = "Show", 
+        onvalue = 1,
+        offvalue = 0,
+        command=lambda: show_pass(),
+    )
 
     btn_login = ttk.Button(
         master=window_login,
@@ -519,6 +544,22 @@ def login(other_window):
     )
     window_login.bind('<Return>', login_button)
 
+    def forgot_password():
+        # ! run the exe file in the same directory as library.py is !
+        # ? is there any better solution to run this file ?
+        chdir('.')
+        try:
+            system('start RecoverPassword.exe')
+        except:
+            messagebox.showerror('exe file', 'Make sure that the exe file is  in the same directory as library.py is')
+
+    btn_forgot_password = ttk.Button(
+        master=window_login,
+        text='Forget Password?',
+        width=19,
+        command=forgot_password
+    )
+
     btn_back = ttk.Button(
         master=window_login,
         text='Back',
@@ -527,7 +568,7 @@ def login(other_window):
     )
     window_login.bind('<Escape>', lambda *args: user_menu(window_login))
 
-    """Display all here"""
+    # Display all here
     lbl_login_title.grid(
         row=0,
         column=0,
@@ -545,6 +586,9 @@ def login(other_window):
     ent_username.grid(
         row=1,
         column=1,
+        ipady=1,
+        ipadx=1,
+        padx=3,
     )
     lbl_password.grid(
         row=2,
@@ -556,31 +600,47 @@ def login(other_window):
     ent_password.grid(
         row=2,
         column=1,
+        ipady=1,
+        ipadx=1,
         pady=5,
+        padx=3,
+    )
+    btn_reveal_password.grid(
+        row=2,
+        column=2,
+        padx=4,
     )
     btn_login.grid(
         row=3,
         column=0,
         columnspan=2,
-        sticky=(W,E)
+        sticky=(W,E),
+        ipady=3,
+    )
+    btn_forgot_password.grid(
+        row=4,
+        column=1,
+        padx=3,
+        ipady=3,
     )
     btn_back.grid(
         row=4,
         column=0,
-        pady=5
+        pady=5,
+        ipady=3,
     )
 
 def signup(other_window):
+    """Signup panel"""
     other_window.destroy()
-    """Signup window"""
     window_signup = Tk()
     window_signup.title('Signup Panel')
     window_signup.config(background='#88AB75')
 
-    """Creating signup window labels and buttons"""
+    # Creating signup window labels and buttons
     lbl_signup_title = ttk.Label(
         master=window_signup,
-        text='************** Signup **************',
+        text='************** Sign Up **************',
         font=('Times new roman', 18),
         background='#88AB75',
         foreground='black',
@@ -593,6 +653,36 @@ def signup(other_window):
     )
     ent_username = ttk.Entry(
         master=window_signup,
+        font=('Arial', 12),
+    )
+
+    # ? a better solution ?
+    def show_pass():
+        global counter
+        if counter&1 == 1:
+            ent_password.config(show='')
+            counter += 1
+        else:
+            ent_password.config(show='*')
+            counter += 1
+
+    btn_reveal_password = ttk.Checkbutton(
+        master=window_signup,
+        text = "Show", 
+        onvalue = 1,
+        offvalue = 0,
+        command=lambda: show_pass(),
+    )
+
+    lbl_email = ttk.Label(
+        master=window_signup,
+        text='Email',
+        background='#88AB75',
+        font=('Arial', 12),
+    )
+    ent_email = ttk.Entry(
+        master=window_signup,
+        font=('Arial', 12),
     )
     lbl_password = ttk.Label(
         master=window_signup,
@@ -602,6 +692,8 @@ def signup(other_window):
     )
     ent_password = ttk.Entry(
         master=window_signup,
+        font=('Arial', 12),
+        show='*',
     )
     def suggest_password():
         suggested_password = pg.generate()
@@ -616,27 +708,25 @@ def signup(other_window):
     def save_new_user(*args):
         new_username = ent_username.get()
         new_password = ent_password.get()
+        new_email = ent_email.get()
 
-        if new_username == '' or new_password == '':
-            messagebox.showwarning('Input empty', 'Please fill the box')
-
+        if new_username == '' or new_password == '' or new_email == '':
+            messagebox.showwarning('Input Empty', 'Please fill the box')
         elif new_username.isdigit():
-            messagebox.showwarning('Invalid username', 'Username can not be a number')
-
+            messagebox.showwarning('Invalid Username', 'Username can not be a number')
+        elif (new_email.isdigit()) or ('@' not in new_email) or ('gmail' not in new_email) or ('com' not in new_email):
+            messagebox.showwarning('Invalid Email', 'Email address must be a gmail account')
         else:
-            new_user = Member(new_username, new_password)
+            new_user = Member(new_username, new_password, new_email)
             
             try:
                 new_user.signup()
-
             except FileNotFoundError as e:
                 messagebox.showerror('Users file', e)
-
             except AssertionError:
                 messagebox.showwarning('Invalid username', 'Username has been already taken!')
-
             else:
-                messagebox.showinfo('Result', 'Signed up successfully. You can login!')
+                messagebox.showinfo('Result', 'Signed up successfully')
                 internal_user_menu(new_username, window_signup)
 
     style = ttk.Style()
@@ -679,34 +769,57 @@ def signup(other_window):
     ent_username.grid(
         row=1,
         column=1,
+        ipadx=1,
+        ipady=1,
+    )
+    btn_reveal_password.grid(
+        row=3,
+        column=2,
+        padx=4,
+    )
+    lbl_email.grid(
+        row=2,
+        column=0,
+        sticky=(W,),
+        padx=3,
+        pady=(5,0)
+    )
+    ent_email.grid(
+        row=2,
+        column=1,
+        ipadx=1,
+        ipady=1,
+        pady=(5,0)
     )
     lbl_password.grid(
-        row=2,
+        row=3,
         column=0,
         sticky=(W,),
         padx=3,
         pady=5,
     )
     ent_password.grid(
-        row=2,
+        row=3,
         column=1,
+        ipadx=1,
+        ipady=1,
         pady=5,
     )
     btn_suggest_password.grid(
-        row=2,
-        column=2,
+        row=3,
+        column=3,
         columnspan=2,
         padx=4,
     )
     btn_submit.grid(
-        row=3,
+        row=4,
         column=0,
         columnspan=2,
         padx=3,
         sticky=(W,E),
     )
     btn_back.grid(
-        row=4,
+        row=5,
         column=0,
         pady=5
     )
@@ -739,6 +852,7 @@ def deleting_account(other_window):
     )
     ent_username = ttk.Entry(
         master=window_del_account,
+        font=('Arial', 12),
     )
     lbl_password = ttk.Label(
         master=window_del_account,
@@ -748,6 +862,8 @@ def deleting_account(other_window):
     )
     ent_password = ttk.Entry(
         master=window_del_account,
+        show='*',
+        font=('Arial', 12),
     )
 
     #create buttons
@@ -792,6 +908,24 @@ def deleting_account(other_window):
     )
     window_del_account.bind('<Return>', del_btn)
 
+    # ? a better solution ?
+    def show_pass():
+        global counter
+        if counter&1 == 1:
+            ent_password.config(show='')
+            counter += 1
+        else:
+            ent_password.config(show='*')
+            counter += 1
+
+    btn_reveal_password = ttk.Checkbutton(
+        master=window_del_account,
+        text = "Show", 
+        onvalue = 1,
+        offvalue = 0,
+        command=lambda: show_pass(),
+    )
+
     btn_back = ttk.Button(
         master=window_del_account,
         text='Back',
@@ -809,6 +943,11 @@ def deleting_account(other_window):
         pady=(10,),
         padx=3,
         sticky=(W,)
+    )
+    btn_reveal_password.grid(
+        row=2,
+        column=2,
+        padx=4,
     )
     lbl_username.grid(
         row=1,
